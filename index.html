@@ -1,0 +1,115 @@
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>煩惱解決!</title>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: rgb(33, 33, 33); 
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .spinner {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .dialogue, .follow-up, #restart-button {
+        color: white;
+        text-align: center;
+        display: none;
+    }
+    h1 {
+        font-size: 28px; 
+    }
+    .button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 24px; 
+    }
+    #restart-button {
+        display: none;
+        background-color: green; 
+        color: black; 
+        border-radius: 50px; 
+        padding: 10px 30px;
+    }
+</style>
+</head>
+<body>
+<div class="spinner" id="spinner"></div>
+<div class="dialogue" id="initial-dialogue">
+    <h1>你有煩惱嗎？</h1>
+    <button class="button" onclick="handleResponse('yes')">有</button>
+    <button class="button" onclick="handleResponse('no')">沒有</button>
+</div>
+<div class="follow-up" id="follow-up-yes">
+    <h1>它可以被解決嗎？</h1>
+    <button class="button" onclick="handleFinalResponse('solvable')">可以</button>
+    <button class="button" onclick="handleFinalResponse('unsolvable')">不行</button>
+</div>
+<div class="follow-up" id="final-message"></div>
+<button class="button" id="restart-button" onclick="restartProcess()">重來</button>
+<script>
+    setTimeout(function() {
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('initial-dialogue').style.display = 'block';
+    }, Math.random() * 1000 + 500); 
+
+    function handleResponse(answer) {
+        document.getElementById('initial-dialogue').style.display = 'none';
+        if (answer === 'yes') {
+            document.getElementById('spinner').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('follow-up-yes').style.display = 'block';
+            }, Math.random() * 1000 + 500);
+        } else {
+            displayFinalMessage('你沒有煩惱,問題解決！');
+        }
+    }
+
+    function handleFinalResponse(response) {
+        document.getElementById('follow-up-yes').style.display = 'none';
+        let message = response === 'solvable' ?
+            '既然可以解決，那你還煩惱什麼?' :
+            '既然沒辦法解決，那你還煩惱什麼?';
+        displayFinalMessage(message);
+    }
+
+    function displayFinalMessage(message) {
+        document.getElementById('spinner').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('final-message').innerHTML = '<h1>' + message + '</h1>';
+            document.getElementById('final-message').style.display = 'block';
+            document.getElementById('restart-button').style.display = 'block';
+        }, Math.random() * 1000 + 500);
+    }
+
+    function restartProcess() {
+        document.getElementById('follow-up-yes').style.display = 'none';
+        document.getElementById('final-message').style.display = 'none';
+        document.getElementById('restart-button').style.display = 'none';
+        document.getElementById('spinner').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('initial-dialogue').style.display = 'block';
+        }, Math.random() * 1000 + 500);
+    }
+</script>
+</body>
+</html>
